@@ -149,6 +149,8 @@ plt.show()
 
 from pycity_scheduling.classes import *
 from pycity_scheduling.algorithms import *
+from pycity_scheduling.util.plot_schedules import plot_entity
+from pycity_scheduling.util.metric import self_consumption
 
 t = Timer(op_horizon=24, step_size=3600, initial_date=(2018, 3, 15), initial_time=(0, 0, 0))
 w = Weather(timer=t, location=(50.76, 6.07))
@@ -171,4 +173,9 @@ cd.addEntity(bd, position=(0, 0))
 
 opt = CentralOptimization(city_district=cd, mode= "integer" )
 res = opt.solve()
-# cd.copy_schedule(dst= "optim_schedule" )
+cd.copy_schedule(dst= "optim_schedule" )
+
+plot_entity(entity=cd, schedule=[ "optim_schedule" ], title= " City district - Cost -optimal schedules " )
+plot_entity(entity=ba, schedule=[ "optim_schedule" ], title= " Battery unit - Cost -optimal schedules " )
+
+print(self_consumption(entity=bd))
